@@ -1,0 +1,37 @@
+@startuml
+title Séquence — Gestion des serveurs et permissions
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam defaultFontName Arial
+skinparam sequence {
+  ArrowColor #754735
+  LifeLineBorderColor #754735
+  LifeLineBackgroundColor #F1DDD4
+  ParticipantBorderColor #754735
+  ParticipantBackgroundColor #FFFFFF
+  ParticipantFontColor #2B211E
+}
+actor Manager
+participant "Application mobile" as App
+database "API / Système" as API
+database "Base de données" as DB
+Manager -> App : Ajouter ou modifier un serveur
+App -> API : Enregistrer profil serveur
+API -> API : Vérifier rôle Manager et café concerné
+API -> DB : Créer / mettre à jour utilisateur
+DB --> API : Serveur enregistré
+opt Attribution de permissions
+  Manager -> App : Sélectionner permissions
+  App -> API : Affecter permissions au serveur
+  API -> DB : Enregistrer associations utilisateur-permission
+  DB --> API : Permissions enregistrées
+end
+API --> App : Confirmation
+alt Suppression d'un serveur
+  Manager -> App : Demander suppression
+  App -> API : Supprimer / désactiver le serveur
+  API -> DB : Retirer l'accès du serveur
+  API --> App : Confirmation
+end
+@enduml

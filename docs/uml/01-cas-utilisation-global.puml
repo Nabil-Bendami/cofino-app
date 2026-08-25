@@ -1,0 +1,58 @@
+@startuml
+title Cas d'utilisation global — SaaS de commandes pour cafés
+left to right direction
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Arial
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+}
+skinparam actor {
+  FontColor #754735
+}
+
+actor Manager
+actor Serveur
+rectangle "Application mobile SaaS — Café" #F1DDD4 {
+  usecase "S'authentifier" as UCAuth
+  usecase "Consulter les commandes" as UCOrders
+  usecase "Consulter l'historique" as UCHistory
+  usecase "Gérer le menu" as UCMenu
+  usecase "Gérer les produits" as UCProducts
+  usecase "Gérer les catégories" as UCCats
+  usecase "Gérer les serveurs" as UCStaff
+  usecase "Attribuer des permissions" as UCPerms
+  usecase "Consulter statistiques\net reporting" as UCStats
+  usecase "Consulter le menu" as UCViewMenu
+  usecase "Rechercher un produit" as UCSearch
+  usecase "Créer une commande" as UCCreate
+  usecase "Consulter mes commandes" as UCMyOrders
+  usecase "Recevoir une nouvelle commande" as UCReceive
+}
+Manager --> UCAuth
+Manager --> UCOrders
+Manager --> UCHistory
+Manager --> UCMenu
+Manager --> UCProducts
+Manager --> UCCats
+Manager --> UCStaff
+Manager --> UCPerms
+Manager --> UCStats
+Manager --> UCReceive
+Serveur --> UCAuth
+Serveur --> UCViewMenu
+Serveur --> UCSearch
+Serveur --> UCCreate
+Serveur --> UCMyOrders
+UCMenu .> UCProducts : <<include>>
+UCMenu .> UCCats : <<include>>
+UCStaff .> UCPerms : <<include>>
+UCCreate .> UCViewMenu : <<include>>
+UCCreate .> UCSearch : <<extend>>
+UCReceive .> UCOrders : <<include>>
+@enduml

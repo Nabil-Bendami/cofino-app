@@ -1,0 +1,35 @@
+@startuml
+title Diagramme de composants
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 14
+skinparam defaultFontName Arial
+skinparam component {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+}
+actor Manager
+actor Serveur
+component "Application mobile\n(interface adaptée)" as Mobile #E4C7BD
+component "API applicative" as API #FFFFFF
+component "Authentification\net contrôle d'accès" as Auth #F1DDD4
+component "Gestion du menu" as Menu #F1DDD4
+component "Gestion des commandes" as Orders #F1DDD4
+component "Statistiques / reporting" as Stats #F1DDD4
+database "Base de données\ntransactionnelle" as DB #FFFFFF
+cloud "Stockage d'images\nproduits" as Storage #FFFFFF
+Manager --> Mobile
+Serveur --> Mobile
+Mobile --> API : HTTPS
+API --> Auth
+API --> Menu
+API --> Orders
+API --> Stats
+Auth --> DB
+Menu --> DB
+Menu --> Storage
+Orders --> DB
+Stats --> DB
+@enduml

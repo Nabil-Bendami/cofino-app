@@ -1,0 +1,40 @@
+@startuml
+title Cas d'utilisation — Manager du café
+left to right direction
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Arial
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+}
+actor Manager
+rectangle "Espace manager" #F1DDD4 {
+  usecase "Se connecter" as A
+  usecase "Voir les nouvelles commandes" as B
+  usecase "Voir le détail d'une commande" as C
+  usecase "Consulter l'historique" as D
+  usecase "Créer / modifier / supprimer\nun produit" as E
+  usecase "Gérer catégories" as F
+  usecase "Modifier prix, description\net image" as G
+  usecase "Activer / désactiver\nun produit" as H
+  usecase "Ajouter / modifier / supprimer\nun serveur" as I
+  usecase "Attribuer permissions\naux serveurs" as J
+  usecase "Voir commandes, produits\nles plus demandés et revenus" as K
+}
+Manager --> A
+Manager --> B
+Manager --> D
+Manager --> E
+Manager --> F
+Manager --> I
+Manager --> K
+B .> C : <<include>>
+E .> G : <<include>>
+E .> H : <<include>>
+I .> J : <<include>>
+@enduml

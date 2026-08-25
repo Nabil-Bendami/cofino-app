@@ -1,0 +1,90 @@
+@startuml
+title Diagramme de classes — Domaine fonctionnel
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 14
+skinparam defaultFontName Arial
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+  HeaderBackgroundColor #E4C7BD
+}
+hide circle
+
+enum Role {
+  MANAGER
+  SERVEUR
+}
+enum StatutCommande {
+  NOUVELLE
+  CONSULTEE
+  HISTORIQUE
+}
+class Cafe {
+  +id: UUID
+  +nom: String
+  +ville: String
+  +devise: String = MAD
+  +creeLe: DateTime
+}
+class Utilisateur {
+  +id: UUID
+  +nomComplet: String
+  +telephone: String
+  +email: String
+  +motDePasseHash: String
+  +role: Role
+  +actif: Boolean
+  +creeLe: DateTime
+}
+class Permission {
+  +id: UUID
+  +code: String
+  +libelle: String
+}
+class Categorie {
+  +id: UUID
+  +nom: String
+  +ordreAffichage: Integer
+}
+class Produit {
+  +id: UUID
+  +nom: String
+  +description: String
+  +prix: Decimal
+  +imageUrl: String
+  +actif: Boolean
+}
+class Commande {
+  +id: UUID
+  +numero: String
+  +remarque: String
+  +total: Decimal
+  +statut: StatutCommande
+  +confirmeeLe: DateTime
+}
+class LigneCommande {
+  +id: UUID
+  +nomProduit: String
+  +prixUnitaire: Decimal
+  +quantite: Integer
+  +sousTotal: Decimal
+}
+
+Cafe "1" *-- "1..*" Utilisateur : emploie >
+Cafe "1" *-- "0..*" Categorie : organise >
+Categorie "1" -- "0..*" Produit : contient >
+Cafe "1" *-- "0..*" Commande : reçoit >
+Utilisateur "1" -- "0..*" Commande : crée (serveur) >
+Commande "1" *-- "1..*" LigneCommande : détaille >
+Produit "1" -- "0..*" LigneCommande : référence >
+Utilisateur "0..*" -- "0..*" Permission : reçoit >
+Utilisateur --> Role
+Commande --> StatutCommande
+note right of LigneCommande
+  Les valeurs du produit sont figées
+  lors de la confirmation.
+end note
+@enduml

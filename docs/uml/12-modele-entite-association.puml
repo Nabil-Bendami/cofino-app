@@ -1,0 +1,88 @@
+@startuml
+title Modèle entité-association
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam defaultFontName Arial
+skinparam entity {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  FontColor #2B211E
+}
+entity cafe {
+  * id : uuid <<PK>>
+  --
+  nom : varchar
+  ville : varchar
+  devise : varchar
+  cree_le : datetime
+}
+entity utilisateur {
+  * id : uuid <<PK>>
+  --
+  cafe_id : uuid <<FK>>
+  nom_complet : varchar
+  telephone : varchar
+  email : varchar
+  mot_de_passe_hash : varchar
+  role : enum
+  actif : boolean
+}
+entity permission {
+  * id : uuid <<PK>>
+  --
+  code : varchar
+  libelle : varchar
+}
+entity utilisateur_permission {
+  * utilisateur_id : uuid <<PK, FK>>
+  * permission_id : uuid <<PK, FK>>
+}
+entity categorie {
+  * id : uuid <<PK>>
+  --
+  cafe_id : uuid <<FK>>
+  nom : varchar
+  ordre_affichage : integer
+}
+entity produit {
+  * id : uuid <<PK>>
+  --
+  categorie_id : uuid <<FK>>
+  nom : varchar
+  description : text
+  prix : decimal
+  image_url : varchar
+  actif : boolean
+}
+entity commande {
+  * id : uuid <<PK>>
+  --
+  cafe_id : uuid <<FK>>
+  serveur_id : uuid <<FK>>
+  numero : varchar
+  remarque : text
+  total : decimal
+  statut : enum
+  confirmee_le : datetime
+}
+entity ligne_commande {
+  * id : uuid <<PK>>
+  --
+  commande_id : uuid <<FK>>
+  produit_id : uuid <<FK>>
+  nom_produit : varchar
+  prix_unitaire : decimal
+  quantite : integer
+  sous_total : decimal
+}
+cafe ||--o{ utilisateur
+cafe ||--o{ categorie
+cafe ||--o{ commande
+categorie ||--o{ produit
+utilisateur ||--o{ commande : crée
+utilisateur ||--o{ utilisateur_permission
+permission ||--o{ utilisateur_permission
+commande ||--|{ ligne_commande
+produit ||--o{ ligne_commande
+@enduml

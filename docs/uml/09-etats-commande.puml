@@ -1,0 +1,28 @@
+@startuml
+title États — Cycle de vie minimal d'une commande
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 14
+skinparam defaultFontName Arial
+skinparam state {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+  StartColor #754735
+  EndColor #754735
+}
+[*] --> Brouillon : sélection des produits
+Brouillon --> Nouvelle : confirmation par le serveur / enregistrement
+Nouvelle : visible dans les nouvelles commandes
+Nouvelle --> Consultee : ouverture du détail par le manager
+Consultee : détails consultés
+Consultee --> Historique : conservation automatique
+Historique : consultable dans l'historique
+Historique --> [*]
+note right of Nouvelle
+  Aucun traitement de cuisine,
+  paiement ou annulation n'est
+  inclus dans le périmètre initial.
+end note
+@enduml

@@ -1,0 +1,41 @@
+@startuml
+title Cas d'utilisation — Serveur
+left to right direction
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 18
+skinparam defaultFontName Arial
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+}
+actor Serveur
+rectangle "Espace serveur" #F1DDD4 {
+  usecase "Se connecter" as A
+  usecase "Consulter le menu disponible" as B
+  usecase "Rechercher un produit" as C
+  usecase "Sélectionner des produits" as D
+  usecase "Ajuster les quantités" as E
+  usecase "Ajouter une remarque" as F
+  usecase "Voir le total" as G
+  usecase "Confirmer la commande" as H
+  usecase "Consulter mes commandes\nprécédentes" as I
+}
+Serveur --> A
+Serveur --> B
+Serveur --> C
+Serveur --> D
+Serveur --> E
+Serveur --> F
+Serveur --> G
+Serveur --> H
+Serveur --> I
+D .> B : <<include>>
+C .> B : <<extend>>
+D .> E : <<include>>
+H .> G : <<include>>
+H .> F : <<extend>>
+@enduml

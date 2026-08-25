@@ -1,0 +1,35 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Résumé du projet}{1}{section.1}%
+\contentsline {section}{\numberline {2}Contexte et problématique}{1}{section.2}%
+\contentsline {section}{\numberline {3}Objectifs de l’application}{1}{section.3}%
+\contentsline {section}{\numberline {4}Présentation générale de la solution}{1}{section.4}%
+\contentsline {section}{\numberline {5}Acteurs du système}{2}{section.5}%
+\contentsline {section}{\numberline {6}Périmètre fonctionnel}{2}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Inclus dans la version initiale}{2}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Hors périmètre initial}{2}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Besoins fonctionnels détaillés}{2}{section.7}%
+\contentsline {section}{\numberline {8}Besoins non fonctionnels}{4}{section.8}%
+\contentsline {section}{\numberline {9}Règles de gestion}{4}{section.9}%
+\contentsline {section}{\numberline {10}Description détaillée des cas d’utilisation}{5}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Vue d’ensemble}{5}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}UC-01 — S’authentifier}{7}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}UC-02 — Créer et confirmer une commande}{8}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}UC-03 — Consulter les commandes}{8}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}UC-04 — Gérer le menu}{8}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}UC-05 — Gérer les serveurs et les permissions}{9}{subsection.10.6}%
+\contentsline {subsection}{\numberline {10.7}UC-06 — Consulter les statistiques}{9}{subsection.10.7}%
+\contentsline {section}{\numberline {11}Architecture générale de l’application}{9}{section.11}%
+\contentsline {section}{\numberline {12}Modèle de données}{11}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Entités principales}{14}{subsection.12.1}%
+\contentsline {section}{\numberline {13}Structure des écrans de l’application}{14}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Écrans communs}{14}{subsection.13.1}%
+\contentsline {subsection}{\numberline {13.2}Espace serveur}{14}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Espace manager}{14}{subsection.13.3}%
+\contentsline {section}{\numberline {14}Statistiques et reporting}{15}{section.14}%
+\contentsline {section}{\numberline {15}Sécurité et gestion des permissions}{15}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Contrôles d’accès}{15}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Protection des données}{15}{subsection.15.2}%
+\contentsline {section}{\numberline {16}Diagrammes de comportement}{16}{section.16}%
+\contentsline {section}{\numberline {17}Critères d’acceptation}{20}{section.17}%
+\contentsline {section}{\numberline {18}Évolutions futures}{21}{section.18}%
+\contentsline {section}{\numberline {19}Conclusion}{21}{section.19}%

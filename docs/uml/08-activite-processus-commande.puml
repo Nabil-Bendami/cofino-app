@@ -1,0 +1,39 @@
+@startuml
+title Activité — Processus de prise de commande
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 14
+skinparam defaultFontName Arial
+skinparam activity {
+  BackgroundColor #FFFFFF
+  BorderColor #754735
+  ArrowColor #754735
+  FontColor #2B211E
+  DiamondBackgroundColor #E4C7BD
+  DiamondBorderColor #754735
+  BarColor #754735
+}
+start
+:Le serveur s'authentifie;
+:Consulte le menu disponible;
+if (Produit recherché ?) then (oui)
+  :Recherche le produit;
+endif
+:Sélectionne un ou plusieurs produits;
+repeat
+  :Ajuste les quantités;
+repeat while (Ajouter / modifier un produit ?) is (oui)
+if (Remarque ?) then (oui)
+  :Saisit la remarque;
+endif
+:Calcule et affiche le total;
+if (Confirmation ?) then (oui)
+  :Enregistre commande et lignes;
+  :Rend la commande visible au manager;
+  :Alimente les statistiques;
+  :Affiche la confirmation au serveur;
+else (non)
+  :Conserve le brouillon dans l'écran courant;
+endif
+stop
+@enduml

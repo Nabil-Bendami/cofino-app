@@ -1,0 +1,22 @@
+-- supabase/seed.sql
+
+INSERT INTO public.cafes (id, name, city) VALUES 
+('c0000000-0000-0000-0000-000000000001', 'Café Central', 'Casablanca')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.categories (id, cafe_id, name, sort_order) VALUES 
+('ca000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'Boissons Chaudes', 1),
+('ca000000-0000-0000-0000-000000000002', 'c0000000-0000-0000-0000-000000000001', 'Boissons Froides', 2),
+('ca000000-0000-0000-0000-000000000003', 'c0000000-0000-0000-0000-000000000001', 'Viennoiseries', 3)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.products (id, cafe_id, category_id, name, price, description) VALUES 
+('b0000000-0000-0000-0000-000000000001', 'c0000000-0000-0000-0000-000000000001', 'ca000000-0000-0000-0000-000000000001', 'Espresso', 15.00, 'Café court et intense'),
+('b0000000-0000-0000-0000-000000000002', 'c0000000-0000-0000-0000-000000000001', 'ca000000-0000-0000-0000-000000000001', 'Cappuccino', 25.00, 'Espresso, lait chaud et mousse'),
+('b0000000-0000-0000-0000-000000000003', 'c0000000-0000-0000-0000-000000000001', 'ca000000-0000-0000-0000-000000000002', 'Jus d''orange', 20.00, 'Pressé à froid'),
+('b0000000-0000-0000-0000-000000000004', 'c0000000-0000-0000-0000-000000000001', 'ca000000-0000-0000-0000-000000000003', 'Croissant', 10.00, 'Pur beurre')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.permissions (id, code, label, description) VALUES
+('e0000000-0000-0000-0000-000000000001', 'create_order', 'Créer une commande', 'Permet au serveur de créer des commandes')
+ON CONFLICT (code) DO NOTHING;

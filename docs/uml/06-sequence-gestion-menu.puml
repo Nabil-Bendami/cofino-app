@@ -1,0 +1,42 @@
+@startuml
+title Séquence — Gestion du menu
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam defaultFontName Arial
+skinparam sequence {
+  ArrowColor #754735
+  LifeLineBorderColor #754735
+  LifeLineBackgroundColor #F1DDD4
+  ParticipantBorderColor #754735
+  ParticipantBackgroundColor #FFFFFF
+  ParticipantFontColor #2B211E
+}
+actor Manager
+participant "Application mobile" as App
+database "API / Système" as API
+database "Base de données" as DB
+Manager -> App : Ouvrir gestion du menu
+App -> API : Demander catégories et produits
+API -> DB : Lire menu du café
+DB --> API : Menu
+API --> App : Menu
+alt Ajouter ou modifier un produit
+  Manager -> App : Saisir données (nom, prix, etc.)
+  App -> API : Enregistrer produit
+  API -> DB : Créer / mettre à jour le produit
+  DB --> API : Produit enregistré
+  API --> App : Menu actualisé
+else Supprimer un produit
+  Manager -> App : Demander suppression
+  App -> API : Supprimer produit
+  API -> DB : Supprimer le produit non référencé
+  DB --> API : Confirmation
+  API --> App : Menu actualisé
+else Activer ou désactiver
+  Manager -> App : Modifier disponibilité
+  App -> API : Mettre à jour actif
+  API -> DB : Enregistrer état
+  API --> App : Menu actualisé
+end
+@enduml

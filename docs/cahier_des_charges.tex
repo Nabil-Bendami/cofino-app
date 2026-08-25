@@ -1,0 +1,461 @@
+% !TEX program = xelatex
+% Cahier des charges — Application mobile SaaS de gestion des commandes pour cafés
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[a4paper,margin=2.1cm,headheight=22pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\usepackage[french]{babel}
+\frenchsetup{SmallCapsFigTabCaptions=false}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{needspace}
+
+\definecolor{cream}{HTML}{F8F1EC}
+\definecolor{dustyrose}{HTML}{E4C7BD}
+\definecolor{lightbeige}{HTML}{F1DDD4}
+\definecolor{coffee}{HTML}{754735}
+\definecolor{darkbrown}{HTML}{2B211E}
+\definecolor{softwhite}{HTML}{FFFFFF}
+\definecolor{muted}{HTML}{6D625E}
+
+\pagecolor{cream}
+\color{darkbrown}
+\graphicspath{{uml/}{images/}}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=coffee,
+  urlcolor=coffee,
+  pdftitle={Cahier des charges — SaaS de gestion des commandes pour cafés},
+  pdfauthor={Projet SaaS Café Maroc},
+  pdfsubject={Spécification fonctionnelle et technique}
+}
+\setlist[itemize]{leftmargin=1.35em,itemsep=0.25em,topsep=0.35em}
+\setlist[enumerate]{leftmargin=1.55em,itemsep=0.3em,topsep=0.35em}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\titleformat{\section}{\Large\sffamily\bfseries\color{coffee}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries\color{darkbrown}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\sffamily\bfseries\color{coffee}}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{2.0ex plus .5ex}{1.0ex}
+\titlespacing*{\subsection}{0pt}{1.5ex plus .4ex}{0.7ex}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\sffamily\small \textcolor{coffee}{Café Maroc · Cahier des charges}}
+\rhead{\sffamily\small \textcolor{coffee}{\thepage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{dustyrose}\leaders\hrule height \headrulewidth\hfill}}
+
+\newtcolorbox{summarybox}{
+  enhanced, colback=softwhite, colframe=dustyrose, boxrule=0pt,
+  borderline west={4pt}{0pt}{coffee}, arc=4mm,
+  left=5mm,right=5mm,top=4mm,bottom=4mm
+}
+\newtcolorbox{infobox}[1]{
+  enhanced, colback=lightbeige!55!softwhite, colframe=dustyrose,
+  boxrule=0.55pt, arc=3mm, title=\sffamily\bfseries\textcolor{coffee}{#1},
+  coltitle=darkbrown, attach title to upper={\par\smallskip},
+  left=4mm,right=4mm,top=2mm,bottom=3mm
+}
+\newcommand{\pill}[1]{\tcbox[on line,boxsep=1.2pt,left=4pt,right=4pt,top=1pt,bottom=1pt,colback=dustyrose!70!softwhite,colframe=dustyrose,arc=3mm]{\sffamily\footnotesize #1}}
+\newcommand{\umlfigure}[3]{%
+  \begin{figure}[H]
+    \centering
+    \tcbox[width=\textwidth,colback=softwhite,colframe=dustyrose,boxrule=.45pt,arc=3mm,boxsep=3mm]{\includegraphics[width=#2\textwidth,height=.72\textheight,keepaspectratio]{#1}}
+    \caption{#3}
+  \end{figure}%
+}
+
+\begin{document}
+
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[cream] (current page.south west) rectangle (current page.north east);
+    \fill[dustyrose] (current page.north west) rectangle ([yshift=-5.1cm]current page.north east);
+    \fill[coffee] ([xshift=-3.4cm,yshift=2.4cm]current page.south east) circle (4.2cm);
+    \fill[lightbeige] ([xshift=1.0cm,yshift=4.0cm]current page.south west) circle (2.4cm);
+    \draw[coffee,line width=1.3pt] ([xshift=2.1cm,yshift=-1.05cm]current page.north west) -- ++(6.8cm,0);
+  \end{tikzpicture}
+  \vspace*{2.0cm}
+  {\sffamily\Large\textcolor{coffee}{PROJET SAAS MOBILE}}\\[0.55cm]
+  {\sffamily\bfseries\fontsize{32}{37}\selectfont\textcolor{darkbrown}{Cahier des charges}}\\[0.25cm]
+  {\sffamily\fontsize{19}{24}\selectfont\textcolor{coffee}{Gestion des commandes pour cafés au Maroc}}\\[1.35cm]
+  \begin{summarybox}
+    \sffamily\large\textcolor{coffee}{\textbf{Une prise de commande simple, moderne et accessible.}}\\[0.35cm]
+    \normalsize Le serveur prend la commande depuis son téléphone ; le manager la reçoit dans son espace, pilote son menu et suit l’activité de son café.
+  \end{summarybox}
+  \vfill
+  \begin{minipage}{0.63\textwidth}
+    \sffamily\small
+    \textcolor{muted}{Document de spécification fonctionnelle et technique}\\[0.25cm]
+    \textbf{Version :} 1.0 \hspace{1.3cm} \textbf{Date :} \today\\[0.15cm]
+    \textbf{Périmètre :} application mobile SaaS pour cafés marocains
+  \end{minipage}
+\end{titlepage}
+
+\pagenumbering{roman}
+\setcounter{page}{1}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Résumé du projet}
+\begin{summarybox}
+L’application envisagée est un \textbf{SaaS mobile de gestion des commandes}, conçu pour les cafés au Maroc. Elle permet à un serveur de saisir la demande d’un client sur son téléphone, d’en vérifier le total puis de la confirmer. La commande est alors enregistrée et devient immédiatement consultable par le manager du même café. Le manager administre également le menu, les serveurs, leurs permissions et les indicateurs d’activité.
+\end{summarybox}
+
+La solution remplace la prise de commande sur papier ou le recours à une caisse coûteuse par une interface mobile claire, adaptée à des usages rapides en salle. Le périmètre est circonscrit à la prise de commande, au pilotage du menu, à la gestion des serveurs et au reporting associé ; il n’intègre pas de paiement, de gestion de cuisine, de livraison ou de programme de fidélité.
+
+\section{Contexte et problématique}
+De nombreux cafés utilisent encore un support papier pour recueillir les commandes. Ce procédé ralentit la transmission de l’information, rend l’historique difficile à exploiter et limite la visibilité du manager sur les ventes. Les solutions de caisse existantes peuvent, par ailleurs, représenter un investissement matériel et logiciel disproportionné pour un établissement de taille modeste.
+
+Le besoin consiste donc à fournir une solution mobile accessible, utilisable depuis les téléphones déjà détenus par les équipes. Elle doit permettre une saisie fiable des produits et quantités, une disponibilité immédiate des commandes pour le manager et une consolidation automatique des données nécessaires au suivi de l’activité.
+
+\section{Objectifs de l’application}
+\begin{itemize}
+  \item Dématérialiser la prise de commande en salle.
+  \item Réduire les erreurs liées à l’écriture, au calcul manuel et à la retranscription.
+  \item Mettre les nouvelles commandes à disposition du manager sans délai manuel.
+  \item Donner au manager la maîtrise de son menu, de ses produits et de son équipe de serveurs.
+  \item Produire des statistiques simples sur les commandes, les produits les plus demandés et les revenus, aux échelles journalière, hebdomadaire et mensuelle.
+  \item Proposer une expérience mobile rapide, lisible et adaptée à un usage professionnel quotidien.
+\end{itemize}
+
+\section{Présentation générale de la solution}
+La solution est une application mobile connectée à un service SaaS. Chaque compte est rattaché à un café : les informations, menus, produits et commandes d’un établissement restent isolés de ceux des autres établissements. Deux espaces fonctionnels sont proposés :
+
+\begin{itemize}
+  \item \pill{Espace serveur} : consultation du menu actif, recherche, constitution et confirmation d’une commande, consultation de ses commandes précédentes.
+  \item \pill{Espace manager} : consultation des commandes, gestion du menu et des serveurs, attribution de permissions et reporting.
+\end{itemize}
+
+Le cycle principal est présenté dans la figure~\ref{fig:activity-order}. Après confirmation, la commande devient une donnée partagée du café : elle apparaît dans les nouvelles commandes du manager et est prise en compte dans les agrégats de statistiques.
+
+\section{Acteurs du système}
+\begin{tabularx}{\textwidth}{P{0.2\textwidth}Y P{0.28\textwidth}}
+\toprule
+\textbf{Acteur} & \textbf{Responsabilité} & \textbf{Accès principal} \\
+\midrule
+Manager du café & Administre l’espace de son établissement et pilote l’activité. & Commandes, historique, menu, serveurs, permissions, statistiques. \\
+Serveur & Prend les commandes des clients depuis son téléphone. & Menu actif, recherche, panier de commande, total, confirmation, historique personnel. \\
+\bottomrule
+\end{tabularx}
+
+Les deux acteurs doivent s’authentifier. Les permissions attribuées par le manager encadrent les actions du serveur, sans créer de rôle métier supplémentaire.
+
+\section{Périmètre fonctionnel}
+\subsection{Inclus dans la version initiale}
+\begin{itemize}
+  \item Authentification des managers et serveurs.
+  \item Consultation du menu disponible, avec catégories, produits, prix, description, image et disponibilité.
+  \item Création d’une commande avec produits, quantités, remarque facultative et total.
+  \item Transmission automatique de la commande au manager après confirmation.
+  \item Historique des commandes : global pour le manager et personnel pour le serveur.
+  \item Administration du menu, des produits, des catégories, des serveurs et de leurs permissions par le manager.
+  \item Statistiques de commandes, de produits les plus commandés et de revenus, filtrées par période.
+\end{itemize}
+
+\subsection{Hors périmètre initial}
+Ne font pas partie de la version initiale : encaissement ou paiement, gestion de cuisine, réservation de table, livraison, gestion de stock, promotions, fidélité et connexion à une caisse physique. Ces sujets ne sont donc pas présupposés dans les règles de gestion, les écrans ni les diagrammes de ce document.
+
+\section{Besoins fonctionnels détaillés}
+\begin{longtable}{P{0.12\textwidth}P{0.24\textwidth}P{0.55\textwidth}}
+\toprule
+\textbf{Réf.} & \textbf{Besoin} & \textbf{Exigence fonctionnelle} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{Réf.} & \textbf{Besoin} & \textbf{Exigence fonctionnelle} \\
+\midrule
+\endhead
+BF-01 & Authentification & Le manager et le serveur peuvent se connecter à leur espace avec leurs identifiants. L’accès est refusé si le compte est inactif ou si les identifiants sont invalides. \\
+BF-02 & Nouvelles commandes & Le manager consulte la liste des commandes nouvellement confirmées de son café et accède à leur détail : numéro, serveur, produits, quantités, remarque, total et date/heure. \\
+BF-03 & Historique manager & Le manager consulte l’historique des commandes de son café. \\
+BF-04 & Catégories & Le manager ajoute, modifie et supprime les catégories utilisées pour organiser les produits du menu. \\
+BF-05 & Produits & Le manager ajoute, modifie et supprime des produits. Un produit comprend au minimum un nom, une catégorie et un prix ; il peut comporter une description et une image. \\
+BF-06 & Disponibilité & Le manager active ou désactive temporairement un produit. Un produit désactivé ne peut pas être proposé au serveur dans le menu disponible. \\
+BF-07 & Serveurs & Le manager ajoute, modifie ou supprime les comptes de serveurs rattachés à son café. \\
+BF-08 & Permissions & Le manager attribue les permissions prévues aux comptes serveurs. Le système les contrôle avant l’exécution de l’action concernée. \\
+BF-09 & Menu serveur & Le serveur consulte les catégories et les seuls produits actifs de son café, avec leurs informations utiles à la vente. \\
+BF-10 & Recherche & Le serveur recherche un produit parmi les produits disponibles à partir de son nom. \\
+BF-11 & Panier & Le serveur sélectionne un ou plusieurs produits et ajuste la quantité de chaque ligne. Le total est recalculé à chaque modification. \\
+BF-12 & Remarque & Le serveur peut saisir une remarque facultative, applicable à la commande entière. \\
+BF-13 & Confirmation & Le serveur confirme la commande après avoir vérifié son total. Le système enregistre la commande et ses lignes de façon atomique. \\
+BF-14 & Notification applicative & Dès l’enregistrement, la nouvelle commande devient visible dans l’espace manager de l’établissement concerné. \\
+BF-15 & Historique serveur & Le serveur consulte les commandes qu’il a précédemment confirmées. \\
+BF-16 & Reporting & Le manager visualise le nombre de commandes, les produits les plus commandés et les revenus par jour, semaine et mois. \\
+\bottomrule
+\caption{Besoins fonctionnels de la version initiale.}\label{tab:functional-needs}
+\end{longtable}
+
+\section{Besoins non fonctionnels}
+\begin{tabularx}{\textwidth}{P{0.25\textwidth}Y}
+\toprule
+\textbf{Axe} & \textbf{Exigence} \\
+\midrule
+Sécurité & Communications chiffrées en HTTPS ; mots de passe non conservés en clair ; contrôle systématique de l’identité, du rôle, des permissions et de l’appartenance au café. \\
+Performance & L’affichage d’un écran usuel (menu, liste de commandes, détail) cible une réponse perceptible en moins de 2 secondes dans des conditions réseau mobiles normales. La confirmation doit retourner un résultat clair sans doublon. \\
+Disponibilité & Le service SaaS vise une disponibilité adaptée à une exploitation quotidienne. En cas d’indisponibilité, l’application informe clairement l’utilisateur et ne présente pas une commande comme confirmée si elle ne l’est pas. \\
+Simplicité d’utilisation & Les parcours sont limités en étapes, les libellés sont explicites, les actions de confirmation sont visibles et le total est constamment lisible durant la prise de commande. \\
+Responsive design & Les interfaces s’adaptent aux tailles d’écran de smartphone et tablette, en orientation portrait prioritairement, sans perte d’accès aux actions essentielles. \\
+Compatibilité mobile & L’application est conçue pour un usage mobile moderne, avec une interface tactile et des zones d’action suffisamment grandes. \\
+Confidentialité des données & Les données d’un café ne sont accessibles qu’aux utilisateurs de ce café autorisés. Les données nécessaires au fonctionnement sont minimisées et traitées conformément aux obligations applicables. \\
+\bottomrule
+\end{tabularx}
+
+\section{Règles de gestion}
+\begin{enumerate}[label=\textbf{RG-\arabic*}]
+  \item Chaque utilisateur appartient à un seul café dans le périmètre de cette application ; il ne peut consulter que les données de ce café.
+  \item Un utilisateur porte exactement l’un des deux rôles suivants : manager ou serveur.
+  \item Seul un manager peut gérer le menu, les comptes serveurs et leurs permissions, ainsi que consulter les statistiques globales du café.
+  \item Seuls les produits actifs sont affichés dans le menu disponible au serveur et peuvent être ajoutés à une commande.
+  \item Toute commande confirmée comporte au moins une ligne de commande et chaque quantité est strictement positive.
+  \item Le total d’une commande est la somme, pour chaque ligne, du prix unitaire multiplié par la quantité.
+  \item Le prix et le nom du produit sont figés dans la ligne de commande à la confirmation afin de préserver l’historique, même si le menu évolue ultérieurement.
+  \item La remarque est facultative et porte sur l’ensemble de la commande.
+  \item La confirmation enregistre ensemble la commande, ses lignes, son total, son serveur, sa date/heure et son état \emph{Nouvelle}.
+  \item Une commande nouvellement confirmée est visible automatiquement au manager du même café et alimente les statistiques dès son enregistrement.
+  \item Le manager consulte les détails d’une nouvelle commande ; son état peut alors devenir \emph{Consultée}. La conservation dans l’historique n’implique pas de fonction de préparation, de paiement ou d’annulation.
+  \item Les revenus de reporting correspondent à la somme des totaux des commandes enregistrées sur la période retenue, exprimée en dirhams marocains (MAD).
+\end{enumerate}
+
+\section{Description détaillée des cas d’utilisation}
+\subsection{Vue d’ensemble}
+\umlfigure{01-cas-utilisation-global.png}{.94}{Diagramme de cas d’utilisation global.}\label{fig:usecase-global}
+\umlfigure{02-cas-utilisation-manager.png}{.92}{Cas d’utilisation du manager.}\label{fig:usecase-manager}
+\umlfigure{03-cas-utilisation-serveur.png}{.92}{Cas d’utilisation du serveur.}\label{fig:usecase-server}
+
+\subsection{UC-01 — S’authentifier}
+\begin{infobox}{Objectif}
+Permettre au manager ou au serveur d’accéder à l’espace correspondant à son compte.
+\end{infobox}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Précondition & Un compte actif existe pour l’utilisateur. \\
+Acteurs & Manager, serveur. \\
+Scénario nominal & L’utilisateur ouvre l’application, saisit ses identifiants, puis valide. Le système vérifie les informations et ouvre l’espace correspondant à son rôle. \\
+Exceptions & Si les identifiants sont invalides ou le compte inactif, le système refuse l’accès et affiche un message explicite. \\
+Postcondition & Une session authentifiée et rattachée au café de l’utilisateur est établie. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{UC-02 — Créer et confirmer une commande}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Préconditions & Le serveur est authentifié, dispose de la permission nécessaire et le menu de son café contient au moins un produit actif. \\
+Acteur & Serveur. \\
+Scénario nominal & (1) Le serveur consulte ou recherche un produit. (2) Il ajoute les produits demandés et règle les quantités. (3) Il ajoute, s’il y a lieu, une remarque. (4) L’application calcule le total. (5) Le serveur confirme. (6) Le système enregistre la commande et ses lignes. (7) La commande est rendue visible au manager et comptabilisée dans les statistiques. \\
+Exceptions & Un produit devenu indisponible ou une quantité invalide empêchent la confirmation et invitent le serveur à corriger le panier. Une erreur de communication ne doit pas produire de fausse confirmation. \\
+Postconditions & Une commande numérotée, associée au café et au serveur, existe à l’état \emph{Nouvelle}. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{UC-03 — Consulter les commandes}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Précondition & Le manager est authentifié. \\
+Acteur & Manager. \\
+Scénario nominal & Le manager ouvre les nouvelles commandes, sélectionne une commande et en consulte le détail. L’application affiche le numéro, le serveur, l’horodatage, les lignes, la remarque et le total. \\
+Postcondition & La consultation est disponible uniquement pour les commandes du café du manager ; l’état de la commande peut passer à \emph{Consultée}. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{UC-04 — Gérer le menu}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Précondition & Le manager est authentifié. \\
+Acteur & Manager. \\
+Scénario nominal & Le manager crée, modifie ou supprime une catégorie ou un produit. Pour un produit, il renseigne ou modifie le nom, la catégorie, le prix, la description et l’image selon besoin. Il peut modifier son état actif/inactif. \\
+Règle associée & Un produit inactif n’est pas affiché au serveur. La suppression est autorisée lorsque l’intégrité des commandes historiques est préservée ; les lignes de commande conservent leur libellé et prix figés. \\
+Postcondition & Le menu du café est mis à jour et les produits actifs sont proposés à la prochaine consultation côté serveur. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{UC-05 — Gérer les serveurs et les permissions}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Précondition & Le manager est authentifié. \\
+Acteur & Manager. \\
+Scénario nominal & Le manager consulte ses serveurs, ajoute ou modifie un compte, ou retire un accès. Il choisit les permissions attribuées à chaque serveur. \\
+Postcondition & La liste des serveurs et leurs droits applicatifs sont actualisés pour le café concerné. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{UC-06 — Consulter les statistiques}
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y}
+\toprule Précondition & Le manager est authentifié et des commandes peuvent être présentes sur la période demandée. \\
+Acteur & Manager. \\
+Scénario nominal & Le manager sélectionne une vue jour, semaine ou mois. Le système consolide les commandes enregistrées sur cette période et affiche leur nombre, les produits les plus commandés et les revenus. \\
+Postcondition & Aucun enregistrement opérationnel n’est modifié ; seules les informations de reporting sont affichées. \\
+\bottomrule
+\end{tabularx}
+
+\section{Architecture générale de l’application}
+La solution s’appuie sur une application mobile unique, dont l’interface s’adapte au rôle connecté. Elle communique avec une API applicative sécurisée. Cette API applique les règles métier, vérifie les accès, enregistre les données et expose les indicateurs de reporting. Le stockage des images de produits est séparé de la base transactionnelle, tandis que les métadonnées des images restent liées aux produits.
+
+\umlfigure{10-composants.png}{.95}{Diagramme de composants de la solution.}\label{fig:components}
+\umlfigure{11-deploiement.png}{.94}{Diagramme de déploiement cible.}\label{fig:deployment}
+
+\begin{infobox}{Principes d’architecture}
+\begin{itemize}
+  \item \textbf{Séparation des responsabilités :} interface mobile, API métier, authentification/contrôle d’accès, données et stockage média sont distincts.
+  \item \textbf{Isolation par café :} toute lecture ou écriture est filtrée par le café rattaché à l’utilisateur connecté.
+  \item \textbf{Cohérence transactionnelle :} la création d’une commande et de ses lignes forme une opération unique.
+  \item \textbf{Reporting fondé sur la donnée opérationnelle :} les agrégats reposent sur les commandes confirmées et leurs lignes enregistrées.
+\end{itemize}
+\end{infobox}
+
+\section{Modèle de données}
+Le modèle présenté en figure~\ref{fig:class-model} structure les données métier et leurs relations. Le modèle entité-association de la figure~\ref{fig:er-model} le traduit pour une base de données relationnelle.
+
+\umlfigure{04-diagramme-classes.png}{.96}{Diagramme de classes complet.}\label{fig:class-model}
+\umlfigure{12-modele-entite-association.png}{.97}{Modèle entité-association.}\label{fig:er-model}
+
+\subsection{Entités principales}
+\begin{tabularx}{\textwidth}{P{0.22\textwidth}Y}
+\toprule
+\textbf{Entité} & \textbf{Rôle dans le modèle} \\
+\midrule
+Café & Porte le périmètre d’isolation des données, son nom, sa ville et la devise MAD. \\
+Utilisateur & Représente un manager ou un serveur avec ses identifiants, son statut actif et son café. \\
+Permission & Représente un droit attribuable à un serveur, via l’association utilisateur--permission. \\
+Catégorie / Produit & Organisent le menu. Le produit contient son prix, sa description, son image et son état de disponibilité. \\
+Commande / Ligne de commande & Conservent la commande confirmée, son auteur, sa remarque, son total et le détail factuel de chaque article. \\
+\bottomrule
+\end{tabularx}
+
+\section{Structure des écrans de l’application}
+\subsection{Écrans communs}
+\begin{itemize}
+  \item \textbf{Connexion :} saisie des identifiants, message d’erreur contextualisé et entrée vers l’espace autorisé.
+  \item \textbf{Profil de session :} accès limité aux informations et actions prévues pour l’utilisateur connecté.
+\end{itemize}
+
+\subsection{Espace serveur}
+\begin{tabularx}{\textwidth}{P{0.26\textwidth}Y}
+\toprule
+\textbf{Écran} & \textbf{Contenu et actions essentielles} \\
+\midrule
+Menu & Catégories, cartes produit avec nom, prix, disponibilité et image éventuelle ; recherche par nom. \\
+Panier / commande & Produits sélectionnés, contrôles de quantité, suppression d’une ligne avant confirmation, champ de remarque, total toujours visible et bouton de confirmation. \\
+Confirmation & Retour clair sur l’enregistrement, avec numéro de commande. \\
+Mes commandes & Liste des commandes précédemment confirmées par le serveur et accès à leur détail. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Espace manager}
+\begin{tabularx}{\textwidth}{P{0.26\textwidth}Y}
+\toprule
+\textbf{Écran} & \textbf{Contenu et actions essentielles} \\
+\midrule
+Nouvelles commandes & Liste priorisée des commandes nouvellement confirmées et détail complet d’une commande. \\
+Historique & Recherche et consultation des commandes conservées du café. \\
+Menu & Liste des catégories et produits ; ajout, modification, suppression, prix, description, image et interrupteur de disponibilité. \\
+Serveurs et permissions & Liste des serveurs, création/modification/suppression de compte et attribution des permissions autorisées. \\
+Statistiques & Sélecteur jour/semaine/mois ; nombre de commandes, revenus et classement des produits les plus commandés. \\
+\bottomrule
+\end{tabularx}
+
+\begin{infobox}{Principes d’interface}
+L’interface privilégie les cartes aux coins arrondis, les fonds crème et blanc cassé, les accents rose poudré et les actions brun café. La hiérarchie visuelle donne priorité au total et à la confirmation côté serveur, ainsi qu’aux nouvelles commandes et indicateurs clés côté manager. Les informations critiques ne dépendent pas uniquement de la couleur : un libellé et une icône ou un état textuel les accompagnent.
+\end{infobox}
+
+\section{Statistiques et reporting}
+Les statistiques sont exclusivement destinées au manager de l’établissement. Elles sont alimentées par les commandes confirmées, conformément aux règles \textbf{RG-9} à \textbf{RG-12}.
+
+\begin{tabularx}{\textwidth}{P{0.28\textwidth}Y P{0.24\textwidth}}
+\toprule
+\textbf{Indicateur} & \textbf{Calcul} & \textbf{Périodes proposées} \\
+\midrule
+Nombre de commandes & Nombre de commandes enregistrées dans l’intervalle. & Jour, semaine, mois \\
+Produits les plus commandés & Somme des quantités des lignes, regroupées par produit ; classement décroissant. & Jour, semaine, mois \\
+Revenus & Somme des totaux des commandes enregistrées, en MAD. & Jour, semaine, mois \\
+\bottomrule
+\end{tabularx}
+
+Le fuseau horaire du café est appliqué au découpage des périodes. Les vues de reporting ne constituent pas une fonctionnalité comptable : elles fournissent une lecture opérationnelle de l’activité enregistrée dans l’application.
+
+\section{Sécurité et gestion des permissions}
+\subsection{Contrôles d’accès}
+L’authentification établit l’identité de l’utilisateur. À chaque requête, l’API vérifie ensuite le rôle, les permissions éventuelles et l’appartenance au café concerné. Ainsi, un serveur ne peut ni consulter les statistiques globales ni administrer les utilisateurs et le menu ; un manager ne voit que les données de son établissement.
+
+\subsection{Protection des données}
+\begin{itemize}
+  \item Les communications entre l’application et l’API utilisent HTTPS/TLS.
+  \item Les mots de passe sont stockés sous forme de condensats sécurisés ; ils ne figurent ni dans les journaux applicatifs ni dans les réponses API.
+  \item Les contrôles d’autorisation sont appliqués côté serveur, pas uniquement dans l’interface mobile.
+  \item Les images produits et les données applicatives sont accessibles dans le seul cadre des droits du café concerné.
+  \item Les erreurs présentées à l’utilisateur restent compréhensibles sans exposer de détails techniques sensibles.
+\end{itemize}
+
+\section{Diagrammes de comportement}
+\umlfigure{05-sequence-creation-commande.png}{.95}{Diagramme de séquence de création d’une commande.}\label{fig:sequence-order}
+\umlfigure{06-sequence-gestion-menu.png}{.95}{Diagramme de séquence de gestion du menu.}\label{fig:sequence-menu}
+\umlfigure{07-sequence-gestion-utilisateurs.png}{.95}{Diagramme de séquence de gestion des serveurs et permissions.}\label{fig:sequence-users}
+\umlfigure{08-activite-processus-commande.png}{.68}{Diagramme d’activité du processus de commande.}\label{fig:activity-order}
+\umlfigure{09-etats-commande.png}{.88}{Diagramme d’état d’une commande.}\label{fig:state-order}
+
+\section{Critères d’acceptation}
+La recette fonctionnelle est considérée conforme lorsque l’ensemble des critères ci-dessous est vérifié sur un environnement représentatif.
+
+\begin{longtable}{P{0.1\textwidth}P{0.31\textwidth}P{0.50\textwidth}}
+\toprule
+\textbf{ID} & \textbf{Scénario de recette} & \textbf{Résultat attendu} \\
+\midrule
+\endfirsthead
+\toprule
+\textbf{ID} & \textbf{Scénario de recette} & \textbf{Résultat attendu} \\
+\midrule
+\endhead
+CA-01 & Connexion d’un manager actif avec des identifiants valides. & L’espace manager s’ouvre ; les commandes, menu, serveurs et statistiques de son café sont accessibles. \\
+CA-02 & Connexion d’un serveur actif. & L’espace serveur s’ouvre ; le menu actif et les commandes précédentes du serveur sont accessibles. \\
+CA-03 & Tentative de connexion avec un compte inactif ou des identifiants erronés. & L’accès est refusé avec un message clair ; aucune donnée du café n’est exposée. \\
+CA-04 & Création d’un produit par le manager avec prix, catégorie, description et image. & Le produit apparaît dans le menu du café s’il est actif. \\
+CA-05 & Désactivation d’un produit déjà visible. & Le produit n’est plus proposé au serveur, sans altérer les commandes historiques qui le référencent. \\
+CA-06 & Recherche par le serveur d’un produit actif. & Le produit correspondant est retrouvable depuis le menu. \\
+CA-07 & Création d’une commande à plusieurs lignes avec quantités et remarque. & Le total affiché est égal à la somme des sous-totaux et la remarque est conservée. \\
+CA-08 & Confirmation d’une commande valide par un serveur. & Une commande numérotée est enregistrée une seule fois, visible dans les nouvelles commandes du manager et dans l’historique personnel du serveur. \\
+CA-09 & Consultation du détail d’une commande par le manager. & Le détail présente serveur, date/heure, produits, quantités, prix figés, remarque et total du café concerné. \\
+CA-10 & Consultation du reporting jour, semaine et mois. & Les nombres de commandes, revenus et classements de produits correspondent aux commandes enregistrées pour la période retenue. \\
+CA-11 & Attribution puis retrait d’une permission à un serveur. & L’action protégée est autorisée puis refusée conformément à la permission configurée. \\
+CA-12 & Tentative d’accès d’un utilisateur aux données d’un autre café. & L’accès est systématiquement refusé ou les données sont absentes du résultat. \\
+\bottomrule
+\caption{Critères d’acceptation fonctionnels.}\label{tab:acceptance}
+\end{longtable}
+
+\section{Évolutions futures}
+Les éléments suivants ne font pas partie du périmètre initial. Ils pourront être étudiés après validation de la première version et analyse des usages :
+\begin{itemize}
+  \item intégration d’un paiement ou d’une caisse ;
+  \item écran de préparation ou transmission vers la cuisine ;
+  \item gestion de stock et alertes de rupture ;
+  \item réservation de tables, livraison et programmes de fidélité ;
+  \item export comptable et tableaux de bord avancés ;
+  \item mode déconnecté avec synchronisation différée ;
+  \item prise en charge d’autres langues et intégrations avec des services tiers.
+\end{itemize}
+
+\section{Conclusion}
+Ce cahier des charges définit une application mobile SaaS ciblée sur le besoin essentiel des cafés : prendre une commande rapidement, la rendre immédiatement visible au manager et exploiter les données de vente sans matériel de caisse complexe. Les fonctionnalités, règles, écrans et modèles présentés sont cohérents avec les deux rôles demandés et constituent une base de réalisation, de chiffrage et de recette.
+
+\vfill
+\begin{center}
+\tcbox[colback=lightbeige,colframe=dustyrose,arc=3mm,boxsep=4mm]{\sffamily\textcolor{coffee}{Fin du cahier des charges · Version 1.0}}
+\end{center}
+
+\end{document}

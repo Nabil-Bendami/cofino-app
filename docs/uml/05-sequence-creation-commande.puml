@@ -1,0 +1,38 @@
+@startuml
+title Séquence — Création d'une commande
+skinparam backgroundColor #F8F1EC
+skinparam shadowing false
+skinparam roundcorner 12
+skinparam defaultFontName Arial
+skinparam sequence {
+  ArrowColor #754735
+  LifeLineBorderColor #754735
+  LifeLineBackgroundColor #F1DDD4
+  ParticipantBorderColor #754735
+  ParticipantBackgroundColor #FFFFFF
+  ParticipantFontColor #2B211E
+}
+actor Serveur
+participant "Application mobile" as App
+database "API / Système" as API
+database "Base de données" as DB
+participant "Espace manager" as Manager
+Serveur -> App : Ouvrir le menu
+App -> API : Demander produits actifs
+API -> DB : Lire catégories et produits actifs
+DB --> API : Menu disponible
+API --> App : Menu disponible
+Serveur -> App : Ajouter produits, quantités, remarque
+App -> App : Calculer le total
+Serveur -> App : Confirmer la commande
+App -> API : Créer commande et lignes
+API -> DB : Enregistrer commande (NOUVELLE)
+API -> DB : Enregistrer lignes et total
+DB --> API : Commande enregistrée
+API -> Manager : Signaler nouvelle commande
+API --> App : Confirmation et numéro
+note right of DB
+  La commande contribue immédiatement
+  aux statistiques du café.
+end note
+@enduml
