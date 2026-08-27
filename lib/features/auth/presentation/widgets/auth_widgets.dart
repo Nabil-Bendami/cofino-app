@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AuthPalette {
-  static const background = Color(0xFFE7C995);
-  static const card = Color(0xFF9A7762);
-  static const dark = Color(0xFF5F4031);
-  static const cream = Color(0xFFFFF8EF);
-  static const mutedCream = Color(0xFFEBDCCF);
-  static const field = Color(0xFFFCF7F1);
+  static const background = Color(0xFFF3F3F3);
+  static const card = Color(0xFF2C2E33);
+  static const dark = Color(0xFF242529);
+  static const cream = Color(0xFFFFFFFF);
+  static const mutedCream = Color(0xFFECECEC);
+  static const field = Color(0xFFF8F8F8);
 
   // Welcome dark theme palette
-  static const darkRoast = Color(0xFF28170F);
-  static const darkRoastGradientTop = Color(0xFF3B2418);
-  static const goldenAmber = Color(0xFFEE9F39);
-  static const darkAmberText = Color(0xFF311B0E);
-  static const subtitleTaupe = Color(0xFFC4B4A7);
+  static const darkRoast = Color(0xFF2C2E33);
+  static const darkRoastGradientTop = Color(0xFF393B41);
+  static const goldenAmber = Color(0xFFF58A14);
+  static const darkAmberText = Color(0xFFFFFFFF);
+  static const subtitleTaupe = Color(0xFFD2D2D4);
 }
 
 class AuthScaffold extends StatelessWidget {
@@ -225,7 +225,7 @@ InputDecoration _decoration(String label, IconData icon) => InputDecoration(
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AuthPalette.dark, width: 2),
+        borderSide: const BorderSide(color: AuthPalette.goldenAmber, width: 2),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
@@ -257,8 +257,9 @@ class PrimaryAuthButton extends StatelessWidget {
       child: FilledButton(
         onPressed: loading ? null : onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: AuthPalette.dark,
-          disabledBackgroundColor: AuthPalette.dark.withValues(alpha: .65),
+          backgroundColor: AuthPalette.goldenAmber,
+          disabledBackgroundColor:
+              AuthPalette.goldenAmber.withValues(alpha: .65),
           foregroundColor: AuthPalette.cream,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(26)),

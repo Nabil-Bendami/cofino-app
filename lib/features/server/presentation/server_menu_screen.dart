@@ -40,134 +40,148 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
         NumberFormat.currency(locale: 'fr_MA', symbol: 'MAD', decimalDigits: 2);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F2),
+      backgroundColor: AppTheme.cream,
       bottomNavigationBar: const ServerNavigation(index: 0),
       body: SafeArea(
         child: Column(
           children: [
-            // Top Header Bar
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => context.push('/profile'),
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: AppTheme.goldenAmber.withValues(alpha: 0.2),
-                        shape: BoxShape.circle,
-                        border: Border.all(color: AppTheme.goldenAmber, width: 1.5),
+            // Charcoal header inspired by the coffee ordering reference.
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(bottom: 16),
+              decoration: const BoxDecoration(
+                color: AppTheme.darkRoast,
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(28)),
+              ),
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => context.push('/profile'),
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: AppTheme.goldenAmber.withValues(alpha: 0.2),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: AppTheme.goldenAmber, width: 1.5),
+                          ),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child:
+                                Icon(Icons.person, color: AppTheme.goldenAmber),
+                          ),
+                        ),
                       ),
-                      child: const CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Icon(Icons.person, color: AppTheme.darkRoast),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.location_on,
-                                size: 16, color: AppTheme.goldenAmber),
-                            const SizedBox(width: 4),
-                            Expanded(
-                              child: Text(
-                                profile?.cafeName ?? 'Café Central',
-                                style: const TextStyle(
-                                  color: AppTheme.darkRoast,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on,
+                                    size: 16, color: AppTheme.goldenAmber),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    profile?.cafeName ?? 'Café Central',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
+                              ],
+                            ),
+                            Text(
+                              'Bonjour, ${profile?.fullName ?? 'Serveur'}',
+                              style: const TextStyle(
+                                color: Color(0xFFD1D1D3),
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
-                        Text(
-                          'Bonjour, ${profile?.fullName ?? 'Serveur'}',
-                          style: const TextStyle(
-                            color: Color(0xFF8C7B70),
-                            fontSize: 12,
-                          ),
+                      ),
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.13),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.12),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                        child: IconButton(
+                          icon: const Icon(Icons.notifications_none_rounded,
+                              color: Colors.white, size: 22),
+                          onPressed: () => context.push('/server/history'),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: 42,
-                    height: 42,
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.05),
-                          blurRadius: 8,
+                          color: Colors.black.withValues(alpha: 0.04),
+                          blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.notifications_none_rounded,
-                          color: AppTheme.darkRoast, size: 22),
-                      onPressed: () => context.push('/server/history'),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.trim().toLowerCase();
+                        });
+                      },
+                      style: const TextStyle(
+                          color: AppTheme.darkRoast, fontSize: 15),
+                      decoration: InputDecoration(
+                        hintText: 'Rechercher une boisson…',
+                        hintStyle: const TextStyle(
+                            color: AppTheme.mutedText, fontSize: 14),
+                        prefixIcon: const Icon(Icons.search_rounded,
+                            color: AppTheme.darkRoast, size: 22),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear, size: 18),
+                                onPressed: () {
+                                  _searchController.clear();
+                                  setState(() => _searchQuery = '');
+                                },
+                              )
+                            : null,
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14),
+                      ),
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.04),
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
                 ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value.trim().toLowerCase();
-                    });
-                  },
-                  style: const TextStyle(color: AppTheme.darkRoast, fontSize: 15),
-                  decoration: InputDecoration(
-                    hintText: 'Rechercher votre café...',
-                    hintStyle: const TextStyle(color: Color(0xFFA5968C), fontSize: 14),
-                    prefixIcon: const Icon(Icons.search_rounded,
-                        color: Color(0xFFA5968C), size: 22),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, size: 18),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() => _searchQuery = '');
-                            },
-                          )
-                        : null,
-                    border: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
-                  ),
-                ),
-              ),
+              ]),
             ),
 
             // Main Scrollable Area
@@ -194,7 +208,8 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF83543B).withValues(alpha: 0.3),
+                            color:
+                                const Color(0xFF83543B).withValues(alpha: 0.3),
                             blurRadius: 12,
                             offset: const Offset(0, 6),
                           ),
@@ -301,7 +316,8 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
                         itemBuilder: (context, index) {
                           final isAll = index == 0;
                           final category = isAll ? null : categories[index - 1];
-                          final isSelected = _selectedCategoryId == category?.id;
+                          final isSelected =
+                              _selectedCategoryId == category?.id;
 
                           return Padding(
                             padding: const EdgeInsets.only(right: 10),
@@ -345,7 +361,8 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
                     ),
                     loading: () => const SizedBox(
                       height: 44,
-                      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                      child: Center(
+                          child: CircularProgressIndicator(strokeWidth: 2)),
                     ),
                     error: (_, __) => const SizedBox(height: 44),
                   ),
@@ -411,10 +428,13 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
                               extra: product,
                             ),
                             onAdd: () {
-                              ref.read(cartProvider.notifier).addProduct(product);
+                              ref
+                                  .read(cartProvider.notifier)
+                                  .addProduct(product);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('${product.name} ajouté au panier'),
+                                  content:
+                                      Text('${product.name} ajouté au panier'),
                                   duration: const Duration(seconds: 1),
                                   behavior: SnackBarBehavior.floating,
                                   shape: RoundedRectangleBorder(
@@ -446,7 +466,8 @@ class _ServerMenuScreenState extends ConsumerState<ServerMenuScreen> {
               onPressed: () => context.push('/server/cart'),
               backgroundColor: AppTheme.goldenAmber,
               elevation: 6,
-              icon: const Icon(Icons.shopping_bag_rounded, color: AppTheme.darkRoast),
+              icon: const Icon(Icons.shopping_bag_rounded,
+                  color: AppTheme.darkRoast),
               label: Text(
                 '${cartState.totalItems} • ${currencyFormat.format(cartState.total)}',
                 style: const TextStyle(

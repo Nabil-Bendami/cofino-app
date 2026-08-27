@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../theme/app_theme.dart';
 
 class ManagerNavigation extends StatelessWidget {
   const ManagerNavigation({super.key, required this.index});
@@ -61,30 +62,30 @@ class ServerNavigation extends StatelessWidget {
       ),
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: const Color(0xFFEE9F39).withValues(alpha: 0.2),
+          indicatorColor: Colors.transparent,
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return const TextStyle(
-                color: Color(0xFF2E1B12),
+                color: AppTheme.goldenAmber,
                 fontWeight: FontWeight.w700,
                 fontSize: 12,
               );
             }
             return const TextStyle(
-              color: Color(0xFFA09289),
+              color: AppTheme.mutedText,
               fontWeight: FontWeight.w500,
               fontSize: 12,
             );
           }),
           iconTheme: WidgetStateProperty.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
-              return const IconThemeData(color: Color(0xFFEE9F39), size: 24);
+              return const IconThemeData(color: AppTheme.goldenAmber, size: 24);
             }
-            return const IconThemeData(color: Color(0xFFA09289), size: 24);
+            return const IconThemeData(color: AppTheme.mutedText, size: 24);
           }),
         ),
         child: NavigationBar(
-          height: 64,
+          height: 72,
           elevation: 0,
           backgroundColor: Colors.white,
           selectedIndex: index,

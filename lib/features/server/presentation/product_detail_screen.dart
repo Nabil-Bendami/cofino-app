@@ -29,7 +29,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         NumberFormat.currency(locale: 'fr_MA', symbol: 'MAD', decimalDigits: 2);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F2),
+      backgroundColor: AppTheme.cream,
       body: SafeArea(
         child: Column(
           children: [
@@ -344,7 +344,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                   },
                   style: FilledButton.styleFrom(
                     backgroundColor: AppTheme.goldenAmber,
-                    foregroundColor: AppTheme.darkRoast,
+                    foregroundColor: Colors.white,
                     elevation: 4,
                     shadowColor: Colors.black38,
                     shape: RoundedRectangleBorder(
@@ -355,7 +355,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(Icons.shopping_bag_outlined,
-                          color: AppTheme.darkRoast, size: 22),
+                          color: Colors.white, size: 22),
                       const SizedBox(width: 10),
                       Text(
                         'Add to cart • ${currencyFormat.format(p.price * quantity)}',
@@ -401,16 +401,16 @@ class _SizeOptionCard extends StatelessWidget {
           duration: const Duration(milliseconds: 180),
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
           decoration: BoxDecoration(
-            color: isSelected ? AppTheme.darkRoast : Colors.white,
+            color: isSelected ? AppTheme.goldenAmber : Colors.white,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isSelected ? AppTheme.darkRoast : const Color(0xFFF0E5DB),
+              color: isSelected ? AppTheme.goldenAmber : AppTheme.cardBorder,
               width: 1.5,
             ),
             boxShadow: [
               BoxShadow(
                 color: isSelected
-                    ? AppTheme.darkRoast.withValues(alpha: 0.25)
+                    ? AppTheme.goldenAmber.withValues(alpha: 0.25)
                     : Colors.black.withValues(alpha: 0.03),
                 blurRadius: 8,
                 offset: const Offset(0, 3),
@@ -423,7 +423,7 @@ class _SizeOptionCard extends StatelessWidget {
               Icon(
                 Icons.coffee_rounded,
                 size: iconSize,
-                color: isSelected ? AppTheme.goldenAmber : const Color(0xFF9E8E84),
+                color: isSelected ? Colors.white : AppTheme.mutedText,
               ),
               const SizedBox(height: 8),
               Text(

@@ -21,8 +21,8 @@ DateTime statsPeriodStart(StatsPeriod period, DateTime now) {
   };
 }
 
-final statisticsProvider =
-    FutureProvider.family<Map<String, dynamic>, StatsPeriod>((ref, period) {
+final statisticsProvider = FutureProvider.autoDispose
+    .family<Map<String, dynamic>, StatsPeriod>((ref, period) {
   final now = DateTime.now();
   return ref.watch(orderRepositoryProvider).statistics(
       statsPeriodStart(period, now), now.add(const Duration(seconds: 1)));

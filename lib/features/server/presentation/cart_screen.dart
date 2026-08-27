@@ -83,9 +83,23 @@ class _CartScreenState extends ConsumerState<CartScreen> {
       bottomNavigationBar: const ServerNavigation(index: 1),
       appBar: AppBar(
         title: const Text('Panier'),
+        actions: [
+          if (cartState.items.isNotEmpty)
+            IconButton(
+              tooltip: 'Vider le panier',
+              icon: const Icon(Icons.delete_outline),
+              onPressed: () {
+                ref.read(cartProvider.notifier).clear();
+                _noteController.clear();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Panier vidé.')),
+                );
+              },
+            ),
+        ],
       ),
       body: cartState.items.isEmpty
-          ? const Center(child: Text('Votre panier est vide.'))
+          ? _EmptyCart(onBrowseMenu: () => context.go('/server'))
           : Column(
               children: [
                 Expanded(
@@ -218,4 +232,52 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             ),
     );
   }
+}
+
+class _EmptyCart extends StatelessWidget {
+  const _EmptyCart({required this.onBrowseMenu});
+
+  final VoidCallback onBrowseMenu;
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 76,
+                height: 76,
+                decoration: BoxDecoration(
+                  color: AppTheme.goldenAmber.withValues(alpha: 0.18),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.shopping_bag_outlined,
+                    size: 38, color: AppTheme.caramel),
+              ),
+              const SizedBox(height: 18),
+              const Text('Votre panier est vide.',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.darkRoast)),
+              const SizedBox(height: 8),
+              const Text(
+                  'Ajoutez des produits depuis le menu pour créer une commande.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black54)),
+              const SizedBox(height: 22),
+              ElevatedButton.icon(
+                onPressed: onBrowseMenu,
+                icon: const Icon(Icons.menu_book_outlined),
+                label: const Text('Voir le menu'),
+                style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 22, vertical: 14)),
+              ),
+            ],
+          ),
+        ),
+      );
 }
